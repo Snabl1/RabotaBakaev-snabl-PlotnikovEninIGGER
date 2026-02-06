@@ -1,0 +1,640 @@
+/* ===== ТАНКОВЫЙ СТИЛЬ ===== */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --camo-green: #4a5d23;
+    --camo-brown: #7d5d3b;
+    --camo-tan: #a68a64;
+    --metal-dark: #2a2a2a;
+    --metal-light: #4a4a4a;
+    --rust: #8b4513;
+    --ammo-gold: #daa520;
+    --danger-red: #cc0000;
+    --digital-green: #00ff00;
+    --night-vision: #00cc00;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Rajdhani', sans-serif;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(74, 93, 35, 0.3) 0%, transparent 20%),
+        radial-gradient(circle at 80% 20%, rgba(125, 93, 59, 0.2) 0%, transparent 20%),
+        linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color: #e0e0e0;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Танковая сетка */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(rgba(0, 255, 0, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 0, 0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Танковый контур */
+body::after {
+    content: '';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 70%;
+    border: 2px solid rgba(0, 255, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 
+        inset 0 0 30px rgba(0, 255, 0, 0.1),
+        0 0 50px rgba(0, 255, 0, 0.05);
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* ===== МЕНЮ В СТИЛЕ ТАНКОВОЙ ПАНЕЛИ ===== */
+.menu {
+    background: 
+        linear-gradient(145deg, var(--metal-dark), var(--metal-light)),
+        repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0, 255, 0, 0.1) 2px, rgba(0, 255, 0, 0.1) 4px);
+    padding: 15px 20px;
+    margin: 20px auto;
+    max-width: 1200px;
+    border-radius: 8px;
+    border: 3px solid var(--camo-green);
+    box-shadow: 
+        0 5px 15px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        0 0 20px rgba(0, 255, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.menu::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        var(--ammo-gold) 20%, 
+        var(--danger-red) 40%,
+        var(--digital-green) 60%,
+        var(--ammo-gold) 80%,
+        transparent 100%);
+}
+
+.menu-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.menu a {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 4px;
+    background: linear-gradient(145deg, #3a3a3a, #2a2a2a);
+    color: var(--digital-green);
+    border: 2px solid var(--camo-green);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+}
+
+.menu a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.menu a:hover {
+    background: linear-gradient(145deg, #4a4a4a, #3a3a3a);
+    color: white;
+    border-color: var(--ammo-gold);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 5px 15px rgba(218, 165, 32, 0.3),
+        inset 0 0 20px rgba(0, 255, 0, 0.1);
+}
+
+.menu a:hover::before {
+    left: 100%;
+}
+
+.menu a.active {
+    background: linear-gradient(145deg, var(--camo-green), var(--camo-brown));
+    color: white;
+    border-color: var(--digital-green);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+}
+
+/* ===== КОНТЕЙНЕР В СТИЛЕ БРОНИ ===== */
+.container {
+    background: 
+        linear-gradient(145deg, rgba(42, 42, 42, 0.95), rgba(30, 30, 30, 0.95)),
+        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="rgba(74,93,35,0.1)" stroke-width="2"/></svg>');
+    padding: 30px;
+    margin: 20px auto;
+    max-width: 1200px;
+    border-radius: 10px;
+    border: 3px solid var(--camo-brown);
+    box-shadow: 
+        inset 0 0 30px rgba(0, 0, 0, 0.8),
+        0 10px 30px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, 
+        var(--rust) 0%, 
+        var(--ammo-gold) 25%, 
+        var(--metal-light) 50%,
+        var(--ammo-gold) 75%,
+        var(--rust) 100%);
+}
+
+.container::after {
+    content: '⚙️ ТЕХНИЧЕСКАЯ СТАНЦИЯ';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.7rem;
+    color: var(--ammo-gold);
+    opacity: 0.7;
+    letter-spacing: 1px;
+}
+
+/* ===== ЗАГОЛОВКИ ===== */
+h1 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--digital-green);
+    text-align: center;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 
+        0 0 10px rgba(0, 255, 0, 0.5),
+        2px 2px 4px rgba(0, 0, 0, 0.8);
+    position: relative;
+    padding-bottom: 15px;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--digital-green), transparent);
+}
+
+h2 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--ammo-gold);
+    margin: 25px 0 15px;
+    padding-left: 15px;
+    border-left: 4px solid var(--danger-red);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+h3 {
+    color: var(--camo-tan);
+    margin: 15px 0 10px;
+    font-weight: 600;
+}
+
+/* ===== ТАБЛИЦЫ В СТИЛЕ ТЕРМИНАЛА ===== */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 20px 0;
+    background: rgba(30, 30, 30, 0.8);
+    border-radius: 6px;
+    overflow: hidden;
+    border: 2px solid var(--metal-light);
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+th {
+    background: linear-gradient(to bottom, var(--metal-dark), var(--metal-light));
+    color: var(--digital-green);
+    padding: 15px;
+    text-align: left;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid var(--camo-green);
+    position: relative;
+}
+
+th::after {
+    content: '▼';
+    position: absolute;
+    right: 10px;
+    opacity: 0.5;
+    font-size: 0.8em;
+}
+
+td {
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(74, 93, 35, 0.3);
+    color: #ccc;
+    transition: all 0.2s;
+}
+
+tr {
+    transition: all 0.3s;
+}
+
+tr:hover {
+    background: rgba(74, 93, 35, 0.2);
+    transform: scale(1.002);
+}
+
+tr:hover td {
+    color: white;
+    text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+}
+
+tr:nth-child(even) {
+    background: rgba(42, 42, 42, 0.5);
+}
+
+/* ===== ФОРМЫ В СТИЛЕ КОНТРОЛЬНОЙ ПАНЕЛИ ===== */
+form {
+    background: rgba(40, 40, 40, 0.7);
+    padding: 25px;
+    border-radius: 8px;
+    border: 2px solid var(--camo-green);
+    margin: 20px 0;
+    position: relative;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--camo-tan);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(20, 20, 20, 0.9);
+    border: 2px solid var(--metal-light);
+    border-radius: 4px;
+    color: var(--digital-green);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    transition: all 0.3s;
+    outline: none;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: var(--ammo-gold);
+    box-shadow: 0 0 15px rgba(218, 165, 32, 0.3);
+    background: rgba(30, 30, 30, 0.95);
+}
+
+/* Чекбоксы и радиокнопки */
+input[type="checkbox"], input[type="radio"] {
+    width: auto;
+    margin-right: 10px;
+}
+
+/* ===== КНОПКИ В СТИЛЕ ТАНКОВЫХ КНОПОК ===== */
+.btn {
+    display: inline-block;
+    padding: 12px 28px;
+    background: linear-gradient(145deg, var(--metal-dark), var(--metal-light));
+    color: white;
+    border: 2px solid var(--camo-green);
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    margin: 5px;
+    font-size: 0.9rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+    box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.2), transparent);
+    transition: left 0.6s;
+}
+
+.btn:hover {
+    background: linear-gradient(145deg, var(--camo-brown), var(--camo-green));
+    color: white;
+    border-color: var(--ammo-gold);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 6px 12px rgba(0, 0, 0, 0.5),
+        0 0 20px rgba(218, 165, 32, 0.2);
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 
+        0 2px 4px rgba(0, 0, 0, 0.4),
+        inset 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.btn-delete {
+    background: linear-gradient(145deg, #8b0000, #cc0000);
+    border-color: #ff4444;
+}
+
+.btn-delete:hover {
+    background: linear-gradient(145deg, #cc0000, #ff0000);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+}
+
+.btn-edit {
+    background: linear-gradient(145deg, #8b5a00, #daa520);
+    border-color: #ffcc00;
+}
+
+.btn-success {
+    background: linear-gradient(145deg, #2d5a27, #4a5d23);
+    border-color: var(--digital-green);
+}
+
+/* ===== СТАТУСНЫЕ ИНДИКАТОРЫ ===== */
+.status {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.status-active {
+    background: rgba(0, 255, 0, 0.2);
+    color: var(--digital-green);
+    border: 1px solid rgba(0, 255, 0, 0.3);
+}
+
+.status-inactive {
+    background: rgba(255, 0, 0, 0.2);
+    color: #ff6666;
+    border: 1px solid rgba(255, 0, 0, 0.3);
+}
+
+/* ===== УВЕДОМЛЕНИЯ ===== */
+.alert {
+    padding: 15px 20px;
+    margin: 20px 0;
+    border-radius: 6px;
+    border-left: 5px solid;
+    background: rgba(30, 30, 30, 0.9);
+    font-weight: 600;
+}
+
+.alert-success {
+    border-color: var(--digital-green);
+    color: var(--digital-green);
+    background: rgba(0, 255, 0, 0.1);
+}
+
+.alert-error {
+    border-color: var(--danger-red);
+    color: #ff6666;
+    background: rgba(255, 0, 0, 0.1);
+}
+
+.alert-warning {
+    border-color: var(--ammo-gold);
+    color: var(--ammo-gold);
+    background: rgba(218, 165, 32, 0.1);
+}
+
+/* ===== СПЕЦИАЛЬНЫЕ ЭЛЕМЕНТЫ ===== */
+.price {
+    color: var(--ammo-gold);
+    font-weight: 700;
+    font-family: 'Orbitron', sans-serif;
+    text-shadow: 0 0 5px rgba(218, 165, 32, 0.3);
+}
+
+.qty-input {
+    width: 80px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid var(--metal-light);
+}
+
+/* ===== ТАНКОВАЯ СТАТИСТИКА ===== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 30px 0;
+}
+
+.stat-card {
+    background: linear-gradient(145deg, rgba(42, 42, 42, 0.8), rgba(30, 30, 30, 0.8));
+    padding: 20px;
+    border-radius: 8px;
+    border: 2px solid var(--camo-green);
+    text-align: center;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--ammo-gold);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--rust), var(--ammo-gold), var(--digital-green));
+}
+
+.stat-number {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2.5rem;
+    color: var(--digital-green);
+    margin: 10px 0;
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+.stat-label {
+    color: var(--camo-tan);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+/* ===== АДАПТИВНОСТЬ ===== */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+        margin: 10px;
+    }
+    
+    .menu-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .menu a {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 5px;
+    }
+    
+    table {
+        font-size: 0.9rem;
+    }
+    
+    th, td {
+        padding: 8px 10px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== АНИМАЦИИ ===== */
+@keyframes scanline {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+}
+
+.scanline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.5), transparent);
+    animation: scanline 8s linear infinite;
+    pointer-events: none;
+    z-index: 9999;
+    display: none; /* можно включить для эффекта */
+}
+
+/* Эффект мигания для важных элементов */
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.blink {
+    animation: blink 1s infinite;
+}
+
+/* ===== ТАНКОВЫЙ ЛОГОТИП ===== */
+.tank-logo {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.tank-logo h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.tank-logo .subtitle {
+    color: var(--camo-tan);
+    font-size: 1rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+/* Специальные иконки */
+.icon-tank::before {
+    content: '⚙️';
+    margin-right: 8px;
+}
+
+.icon-ammo::before {
+    content: '🔧';
+    margin-right: 8px;
+}
+
+.icon-military::before {
+    content: '🎯';
+    margin-right: 8px;
+}
