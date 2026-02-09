@@ -1,5 +1,5 @@
 <?php
-require 'config.php';
+require_once 'functions.php';
 
 // Получение клиентов и комплектующих
 $clients = $pdo->query("SELECT * FROM clients")->fetchAll();
@@ -56,11 +56,13 @@ $orders = $pdo->query("
 </head>
 <body>
     <div class="menu">
-        <a href="index.php">Главная</a>
-        <a href="clients.php">Клиенты</a>
-        <a href="categories.php">Категории</a>
-        <a href="components.php">Комплектующие</a>
-        <a href="orders.php">Заказы</a>
+        <nav class="menu-nav">
+            <a href="index.php" class="icon-tank">Главная</a>
+            <a href="clients.php" class="icon-military">Клиенты</a>
+            <a href="categories.php" class="icon-ammo">Категории</a>
+            <a href="components.php" class="icon-tank">Комплектующие</a>
+            <a href="orders.php" class="active icon-military">Заказы</a>
+        </nav>
     </div>
     <div class="container">
         <h1>Заказы</h1>
