@@ -1,0 +1,356 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📸 Скриншоты тестирования PHP сайта</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .header {
+            background: #333;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .test-result {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .success {
+            border-left: 5px solid #4CAF50;
+        }
+        .error {
+            border-left: 5px solid #F44336;
+        }
+        .screenshot {
+            max-width: 600px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .screenshot:hover {
+            transform: scale(1.02);
+        }
+        .test-name {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+        .test-details {
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .screenshot-container {
+            margin-top: 10px;
+        }
+        .timestamp {
+            color: #888;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        .stats {
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        .folder-info {
+            background: #e3f2fd;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📸 Скриншоты тестирования PHP сайта</h1>
+        <p>Отчет о автоматическом тестировании с Selenium</p>
+    </div>
+
+    <div class="stats">
+        <h3>📊 Статистика тестирования</h3>
+        <p><strong>Всего тестов:</strong> 18</p>
+        <p><strong>Успешных:</strong> 18</p>
+        <p><strong>Ошибок:</strong> 0</p>
+        <p><strong>Успешность:</strong> 100.0%</p>
+        <p><strong>Скриншотов:</strong> 18</p>
+        <p><strong>Папка со скриншотами:</strong> 20260211_105933</p>
+    </div>
+
+    <div class="test-result success">
+        <div class="test-name">Тест #1: Навигация: Клиенты</div>
+        <div class="test-details">
+            Статус: <strong>✅ УСПЕХ</strong><br>
+            Загружено: Клиенты - Танковая База <span style="color: #888;">(скриншот: 01_Навигация_Клиенты_105937.png)</span>
+        </div>
+
+        <div class="screenshot-container">
+            <div><strong>Скриншот:</strong> 01_Навигация_Клиенты_105937.png</div>
+            <div class="timestamp">Описание: Страница: Клиенты - Танковая База</div>
+            <img src="01_Навигация_Клиенты_105937.png" alt="Навигация: Клиенты" class="screenshot"
+                 onclick="window.open(this.src, '_blank')">
+        </div>
+    </div>
+    <div class="test-result success">
+        <div class="test-name">Тест #2: Навигация: Категории</div>
+        <div class="test-details">
+            Статус: <strong>✅ УСПЕХ</strong><br>
+            Загружено: Категории - Танковая База <span style="color: #888;">(скриншот: 02_Навигация_Категории_105940.png)</span>
+        </div>
+
+        <div class="screenshot-container">
+            <div><strong>Скриншот:</strong> 02_Навигация_Категории_105940.png</div>
+            <div class="timestamp">Описание: Страница: Категории - Танковая База</div>
+            <img src="02_Навигация_Категории_105940.png" alt="Навигация: Категории" class="screenshot"
+                 onclick="window.open(this.src, '_blank')">
+        </div>
+    </div>
+    <div class="test-result success">
+        <div class="test-name">Тест #3: Навигация: Комплектующие</div>
+        <div class="test-details">
+            Статус: <strong>✅ УСПЕХ</strong><br>
+            Загружено: Комплектующие - Танковая База <span style="color: #888;">(скриншот: 03_Навигация_Комплектующие_105942.png)</span>
+        </div>
+
+        <div class="screenshot-container">
+            <div><strong>Скриншот:</strong> 03_Навигация_Комплектующие_105942.png</div>
+            <div class="timestamp">Описание: Страница: Комплектующие - Танковая База</div>
+            <img src="03_Навигация_Комплектующие_105942.png" alt="Навигация: Комплектующие" class="screenshot"
+                 onclick="window.open(this.src, '_blank')">
+        </div>
+    </div>
+    <div class="test-result success">
+        <div class="test-name">Тест #4: Навигация: Заказы</div>
+        <div class="test-details">
+            Статус: <strong>✅ УСПЕХ</strong><br>
+            Загружено: Заказы - Танковая База <span style="color: #888;">(скриншот: 04_Навигация_Заказы_105945.png)</span>
+        </div>
+
+        <div class="screenshot-container">
+            <div><strong>Скриншот:</strong> 04_Навигация_Заказы_105945.png</div>
+            <div class="timestamp">Описание: Страница: Заказы - Танковая База</div>
+            <img src="04_Навигация_Заказы_105945.png" alt="Навигация: Заказы" class="screenshot"
+                 onclick="window.open(this.src, '_blank')">
+        </div>
+    </div>
+    <div class="test-result success">
+        <div class="test-name">Тест #5: Навигация: Зоны доставки</div>
+        <div class="test-details">
+            Статус: <strong>✅ УСПЕХ</strong><br>
+            Загружено: Зоны доставки - Танковая База <span style="color: #888;">(скриншот: 05_Навигация_Зоны_доставки_105947.png)</span>
+        </div>
+
+        <div class="screenshot-container">
+            <div><strong>Скриншот:</strong> 05_Навигация_Зоны_доставки_105947.png</div>
+            <div class="timestamp">Описание: Страница: Зоны доставки - Танковая База</div>
+            <img src="05_Навигация_Зоны_доставки_105947.png" alt="Навигация: Зоны доставки" class="screenshot"
+                 onclick="window.open(this.src, '_blank')">
+        </div>
+    </div>
+    <div class="test-result success">
+        <div class="test-name">Тест #6: Навигация: Гарантии</div>
+        <div class="test-details">
+            Статус: <strong>✅ УСПЕХ</strong><br>
+            Загружено: Гарантии - Танковая База <span style="color: #888;">(скриншот: 06_Навигация_Гарантии_105949.png)</span>
+        </div>
+
+        <div class="screenshot-container">
+            <div><strong>Скриншот:</strong> 06_Навигация_Гарантии_105949.png</div>
+            <div class="timestamp">Описание: Страница: Гарантии - Танковая База</div>
+            <img src="06_Навигация_Гарантии_105949.png" alt="Навигация: Гарантии" class="screenshot"
+                 onclick="window.open(this.src, '_blank')">
+        </div>
+    </div>
+    <div class="test-result success">
+        <div class="test-name">Тест #7: Добавление категории</div>
+        <div class="test-details">
+            Статус: <strong>✅ УСПЕХ</strong><br>
+            Категория 'ТестКатегория_8868' добавлена <span style="color: #888;">(скриншот: 09_Категории_после_добавления_105954.png)</span>
+        </div>
+
+        <div class="screenshot-container">
+            <div><strong>Скриншот:</strong> 09_Категории_после_добавления_105954.png</div>
+            <div class="timestamp">Описание: После отправки формы</div>
+            <img src="09_Категории_после_добавления_105954.png" alt="Добавление категории" class="screenshot"
+                 onclick="window.open(this.src, '_blank')">
+        </div>
+    </div>
+    <div class="test-result success">
+        <div class="test-name">Тест #8: Поиск категорий</div>
+        <div class="test-details">
+            Статус: <strong>✅ УСПЕХ</strong><br>
+            Поиск выполнен <span style="color: #888;">(скриншот: 10_Категории_поиск_105958.png)</span>
+        </div>
+
+        <div class="screenshot-container">
+            <div><strong>Скриншот:</strong> 10_Категории_поиск_105958.png</div>
+            <div class="timestamp">Описание: Результаты поиска по 'Тест'</div>
+            <img src="10_Категории_поиск_105958.png" alt="Поиск категорий" class="screenshot"
+                 onclick="window.open(this.src, '_blank')">
+        </div>
+    </div>
+    <div class="test-result success">
+        <div class="test-name">Тест #9: Добавление клиента</div>
+        <div class="test-details">
+            Статус: <strong>✅ УСПЕХ</strong><br>
+            Клиент Иванов_552 добавлен <span style="color: #888;">(скриншот: 13_Клиенты_результат_добавления_110003.png)</span>
+        </div>
+
+        <div class="screenshot-container">
+            <div><strong>Скриншот:</strong> 13_Клиенты_результат_добавления_110003.png</div>
+            <div class="timestamp">Описание: После добавления клиента</div>
+            <img src="13_Клиенты_результат_добавления_110003.png" alt="Добавление клиента" class="screenshot"
+                 onclick="window.open(this.src, '_blank')">
+        </div>
+    </div>
+    <div class="test-result success">
+        <div class="test-name">Тест #10: Таблица комплектующих</div>
+        <div class="test-details">
+            Статус: <strong>✅ УСПЕХ</strong><br>
+            Найдено 6 строк <span style="color: #888;">(скриншот: 15_Комплектующие_таблица_110006.png)</span>
+        </div>
+
+        <div class="screenshot-container">
+            <div><strong>Скриншот:</strong> 15_Комплектующие_таблица_110006.png</div>
+            <div class="timestamp">Описание: Таблица с 6 строками</div>
+            <img src="15_Комплектующие_таблица_110006.png" alt="Таблица комплектующих" class="screenshot"
+                 onclick="window.open(this.src, '_blank')">
+        </div>
+    </div>
+    <div class="test-result success">
+        <div class="test-name">Тест #11: Элементы формы заказа</div>
+        <div class="test-details">
+            Статус: <strong>✅ УСПЕХ</strong><br>
+            Все элементы найдены: Выбор клиента, Чекбокс сборки, Чекбокс доставки, Выбор гарантии, Итоговая стоимость <span style="color: #888;">(скриншот: 16_Заказы_страница_110009.png)</span>
+        </div>
+
+        <div class="screenshot-container">
+            <div><strong>Скриншот:</strong> 16_Заказы_страница_110009.png</div>
+            <div class="timestamp">Описание: Страница создания заказа</div>
+            <img src="16_Заказы_страница_110009.png" alt="Элементы формы заказа" class="screenshot"
+                 onclick="window.open(this.src, '_blank')">
+        </div>
+    </div>
+    <div class="test-result success">
+        <div class="test-name">Тест #12: Форма зон доставки</div>
+        <div class="test-details">
+            Статус: <strong>✅ УСПЕХ</strong><br>
+            Все 4 элементов формы найдены <span style="color: #888;">(скриншот: 19_Зоны_доставки_форма_110012.png)</span>
+        </div>
+
+        <div class="screenshot-container">
+            <div><strong>Скриншот:</strong> 19_Зоны_доставки_форма_110012.png</div>
+            <div class="timestamp">Описание: Найдено 4 из 4 элементов формы</div>
+            <img src="19_Зоны_доставки_форма_110012.png" alt="Форма зон доставки" class="screenshot"
+                 onclick="window.open(this.src, '_blank')">
+        </div>
+    </div>
+    <div class="test-result success">
+        <div class="test-name">Тест #13: Выбор типа гарантии</div>
+        <div class="test-details">
+            Статус: <strong>✅ УСПЕХ</strong><br>
+            Доступно 3 вариантов <span style="color: #888;">(скриншот: 21_Гарантии_выбор_типа_110014.png)</span>
+        </div>
+
+        <div class="screenshot-container">
+            <div><strong>Скриншот:</strong> 21_Гарантии_выбор_типа_110014.png</div>
+            <div class="timestamp">Описание: Доступно 3 вариантов гарантии</div>
+            <img src="21_Гарантии_выбор_типа_110014.png" alt="Выбор типа гарантии" class="screenshot"
+                 onclick="window.open(this.src, '_blank')">
+        </div>
+    </div>
+    <div class="test-result success">
+        <div class="test-name">Тест #14: Игровой спиннер</div>
+        <div class="test-details">
+            Статус: <strong>✅ УСПЕХ</strong><br>
+            Спиннер найден на главной странице <span style="color: #888;">(скриншот: 23_Спиннер_крупно_110018.png)</span>
+        </div>
+
+        <div class="screenshot-container">
+            <div><strong>Скриншот:</strong> 23_Спиннер_крупно_110018.png</div>
+            <div class="timestamp">Описание: Игровой спиннер крупным планом</div>
+            <img src="23_Спиннер_крупно_110018.png" alt="Игровой спиннер" class="screenshot"
+                 onclick="window.open(this.src, '_blank')">
+        </div>
+    </div>
+    <div class="test-result success">
+        <div class="test-name">Тест #15: Уведомления на categories.php</div>
+        <div class="test-details">
+            Статус: <strong>✅ УСПЕХ</strong><br>
+            Активных уведомлений нет <span style="color: #888;">(скриншот: 24_Уведомления_categories_110021.png)</span>
+        </div>
+
+        <div class="screenshot-container">
+            <div><strong>Скриншот:</strong> 24_Уведомления_categories_110021.png</div>
+            <div class="timestamp">Описание: Страница: categories.php</div>
+            <img src="24_Уведомления_categories_110021.png" alt="Уведомления на categories.php" class="screenshot"
+                 onclick="window.open(this.src, '_blank')">
+        </div>
+    </div>
+    <div class="test-result success">
+        <div class="test-name">Тест #16: Уведомления на clients.php</div>
+        <div class="test-details">
+            Статус: <strong>✅ УСПЕХ</strong><br>
+            Активных уведомлений нет <span style="color: #888;">(скриншот: 25_Уведомления_clients_110028.png)</span>
+        </div>
+
+        <div class="screenshot-container">
+            <div><strong>Скриншот:</strong> 25_Уведомления_clients_110028.png</div>
+            <div class="timestamp">Описание: Страница: clients.php</div>
+            <img src="25_Уведомления_clients_110028.png" alt="Уведомления на clients.php" class="screenshot"
+                 onclick="window.open(this.src, '_blank')">
+        </div>
+    </div>
+    <div class="test-result success">
+        <div class="test-name">Тест #17: Уведомления на components.php</div>
+        <div class="test-details">
+            Статус: <strong>✅ УСПЕХ</strong><br>
+            Активных уведомлений нет <span style="color: #888;">(скриншот: 26_Уведомления_components_110036.png)</span>
+        </div>
+
+        <div class="screenshot-container">
+            <div><strong>Скриншот:</strong> 26_Уведомления_components_110036.png</div>
+            <div class="timestamp">Описание: Страница: components.php</div>
+            <img src="26_Уведомления_components_110036.png" alt="Уведомления на components.php" class="screenshot"
+                 onclick="window.open(this.src, '_blank')">
+        </div>
+    </div>
+    <div class="test-result success">
+        <div class="test-name">Тест #18: Адаптивные элементы</div>
+        <div class="test-details">
+            Статус: <strong>✅ УСПЕХ</strong><br>
+            Все элементы найдены: Статистические карточки (4 шт.), Прогресс-бары (6 шт.), Таблицы (1 шт.), Кнопки (25 шт.), Панели навигации (1 шт.), Поиск (2 шт.) <span style="color: #888;">(скриншот: 30_Адаптивные_элементы_итог_110044.png)</span>
+        </div>
+
+        <div class="screenshot-container">
+            <div><strong>Скриншот:</strong> 30_Адаптивные_элементы_итог_110044.png</div>
+            <div class="timestamp">Описание: Найдено: 6 типов элементов</div>
+            <img src="30_Адаптивные_элементы_итог_110044.png" alt="Адаптивные элементы" class="screenshot"
+                 onclick="window.open(this.src, '_blank')">
+        </div>
+    </div>
+    <script>
+        // Автоматически открывать скриншоты в новой вкладке при клике
+        document.addEventListener('DOMContentLoaded', function() {
+            const screenshots = document.querySelectorAll('.screenshot');
+            screenshots.forEach(img => {
+                img.addEventListener('click', function() {
+                    window.open(this.src, '_blank');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
