@@ -1,26 +1,51 @@
 <?php
-require 'config.php';
+require_once 'functions.php';
 
 // Добавление клиента
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add'])) {
-    $stmt = $pdo->prepare("INSERT INTO clients (last_name, first_name, middle_name, address, phone) VALUES (?, ?, ?, ?, ?)");
-    $stmt->execute([
-        $_POST['last_name'],
-        $_POST['first_name'],
-        $_POST['middle_name'],
-        $_POST['address'],
-        $_POST['phone']
-    ]);
-    header("Location: clients.php");
-    exit;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['add'])) {
+        $stmt = $pdo->prepare("INSERT INTO clients (last_name, first_name, middle_name, address, phone) VALUES (?, ?, ?, ?, ?)");
+        $stmt->execute([
+            $_POST['last_name'],
+            $_POST['first_name'],
+            $_POST['middle_name'],
+            $_POST['address'],
+            $_POST['phone']
+        ]);
+        redirectWithMessage('clients.php', 'success', 'Клиент успешно добавлен!');
+    }
+    
+    // Редактирование клиента
+    if (isset($_POST['edit'])) {
+        $stmt = $pdo->prepare("UPDATE clients SET last_name = ?, first_name = ?, middle_name = ?, address = ?, phone = ? WHERE client_id = ?");
+        $stmt->execute([
+            $_POST['last_name'],
+            $_POST['first_name'],
+            $_POST['middle_name'],
+            $_POST['address'],
+            $_POST['phone'],
+            $_POST['client_id']
+        ]);
+        redirectWithMessage('clients.php', 'success', 'Клиент успешно обновлен!');
+    }
 }
 
-// Удаление клиента
+// Удаление клиента с проверкой заказов
 if (isset($_GET['delete'])) {
-    $stmt = $pdo->prepare("DELETE FROM clients WHERE client_id = ?");
-    $stmt->execute([$_GET['delete']]);
-    header("Location: clients.php");
-    exit;
+    try {
+        safeDeleteWithCheck($pdo, 'clients', 'client_id', $_GET['delete'], [
+            'orders' => 'client_id'
+        ]);
+        redirectWithMessage('clients.php', 'success', 'Клиент успешно удален!');
+    } catch (Exception $e) {
+        redirectWithMessage('clients.php', 'error', $e->getMessage());
+    }
+}
+
+// Получение клиента для редактирования
+$edit_client = null;
+if (isset($_GET['edit'])) {
+    $edit_client = getRecord($pdo, 'clients', 'client_id', $_GET['edit']);
 }
 
 // Получение всех клиентов
@@ -30,31 +55,114 @@ $clients = $pdo->query("SELECT * FROM clients ORDER BY client_id DESC")->fetchAl
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Клиенты</title>
+    <title>Клиенты - Танковая База</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="scanline"></div>
+    
     <div class="menu">
-        <a href="index.php">Главная</a>
-        <a href="clients.php">Клиенты</a>
-        <a href="categories.php">Категории</a>
-        <a href="components.php">Комплектующие</a>
-        <a href="orders.php">Заказы</a>
+        <nav class="menu-nav">
+            <a href="index.php" class="icon-tank">Главная</a>
+            <a href="clients.php" class="active icon-military">Клиенты</a>
+            <a href="categories.php" class="icon-ammo">Категории</a>
+            <a href="components.php" class="icon-tank">Комплектующие</a>
+            <a href="orders.php" class="icon-military">Заказы</a>
+            <a href="delivery_zones.php" class="icon-tank">Зоны доставки</a>
+            <a href="warranties.php" class="icon-military">Гарантии</a>
+        </nav>
     </div>
+    
     <div class="container">
-        <h1>Клиенты</h1>
+        <div class="tank-logo">
+            <h1>🎯 КЛИЕНТСКАЯ БАЗА</h1>
+            <div class="subtitle">УПРАВЛЕНИЕ СОЛДАТАМИ-ПОКУПАТЕЛЯМИ</div>
+        </div>
         
-        <h2>Добавить нового клиента</h2>
-        <form method="POST">
-            <input type="text" name="last_name" placeholder="Фамилия" required>
-            <input type="text" name="first_name" placeholder="Имя" required>
-            <input type="text" name="middle_name" placeholder="Отчество">
-            <input type="text" name="address" placeholder="Адрес" required>
-            <input type="text" name="phone" placeholder="Телефон">
-            <button type="submit" name="add" class="btn">Добавить</button>
-        </form>
+        <?php displayFlashMessage(); ?>
         
-        <h2>Список клиентов</h2>
+        <div class="tank-tabs">
+            <div class="tank-tab <?= !$edit_client ? 'active' : '' ?>" onclick="window.location.href='clients.php'">
+                Все клиенты
+            </div>
+            <div class="tank-tab <?= $edit_client ? 'active' : '' ?>">
+                <?= $edit_client ? 'Редактирование' : 'Добавление' ?>
+            </div>
+        </div>
+        
+        <?php if ($edit_client): ?>
+        <div class="edit-card">
+            <h2><span class="icon-tank">Редактирование клиента ID: <?= $edit_client['client_id'] ?></span></h2>
+            <form method="POST">
+                <input type="hidden" name="client_id" value="<?= $edit_client['client_id'] ?>">
+                <div class="form-group">
+                    <label>Фамилия:</label>
+                    <input type="text" name="last_name" value="<?= htmlspecialchars($edit_client['last_name']) ?>" 
+                           class="edit-input" required>
+                </div>
+                <div class="form-group">
+                    <label>Имя:</label>
+                    <input type="text" name="first_name" value="<?= htmlspecialchars($edit_client['first_name']) ?>" 
+                           class="edit-input" required>
+                </div>
+                <div class="form-group">
+                    <label>Отчество:</label>
+                    <input type="text" name="middle_name" value="<?= htmlspecialchars($edit_client['middle_name'] ?? '') ?>" 
+                           class="edit-input">
+                </div>
+                <div class="form-group">
+                    <label>Адрес:</label>
+                    <input type="text" name="address" value="<?= htmlspecialchars($edit_client['address']) ?>" 
+                           class="edit-input" required>
+                </div>
+                <div class="form-group">
+                    <label>Телефон:</label>
+                    <input type="text" name="phone" value="<?= htmlspecialchars($edit_client['phone'] ?? '') ?>" 
+                           class="edit-input">
+                </div>
+                <button type="submit" name="edit" class="btn btn-edit">
+                    <span class="icon-tank">Сохранить изменения</span>
+                </button>
+                <a href="clients.php" class="btn">Отмена</a>
+            </form>
+        </div>
+        <?php else: ?>
+        <div class="edit-card">
+            <h2><span class="icon-tank">Добавить нового клиента</span></h2>
+            <form method="POST">
+                <div class="form-group">
+                    <label>Фамилия:</label>
+                    <input type="text" name="last_name" placeholder="Введите фамилию" required>
+                </div>
+                <div class="form-group">
+                    <label>Имя:</label>
+                    <input type="text" name="first_name" placeholder="Введите имя" required>
+                </div>
+                <div class="form-group">
+                    <label>Отчество:</label>
+                    <input type="text" name="middle_name" placeholder="Введите отчество">
+                </div>
+                <div class="form-group">
+                    <label>Адрес:</label>
+                    <input type="text" name="address" placeholder="Введите адрес" required>
+                </div>
+                <div class="form-group">
+                    <label>Телефон:</label>
+                    <input type="text" name="phone" placeholder="Введите телефон">
+                </div>
+                <button type="submit" name="add" class="btn btn-success">
+                    <span class="icon-military">Добавить клиента</span>
+                </button>
+            </form>
+        </div>
+        <?php endif; ?>
+        
+        <h2><span class="icon-military">Список клиентов</span> <span class="tank-badge"><?= count($clients) ?></span></h2>
+        
+        <div class="tank-search">
+            <input type="text" id="clientSearch" placeholder="Поиск клиента...">
+        </div>
+        
         <table>
             <tr>
                 <th>ID</th>
@@ -67,18 +175,89 @@ $clients = $pdo->query("SELECT * FROM clients ORDER BY client_id DESC")->fetchAl
             </tr>
             <?php foreach ($clients as $client): ?>
             <tr>
-                <td><?= $client['client_id'] ?></td>
-                <td><?= htmlspecialchars($client['last_name']) ?></td>
+                <td><span class="price">#<?= $client['client_id'] ?></span></td>
+                <td><strong><?= htmlspecialchars($client['last_name']) ?></strong></td>
                 <td><?= htmlspecialchars($client['first_name']) ?></td>
-                <td><?= htmlspecialchars($client['middle_name']) ?></td>
+                <td><?= htmlspecialchars($client['middle_name'] ?? '-') ?></td>
                 <td><?= htmlspecialchars($client['address']) ?></td>
-                <td><?= htmlspecialchars($client['phone']) ?></td>
+                <td><?= htmlspecialchars($client['phone'] ?? '-') ?></td>
                 <td>
-                    <a href="?delete=<?= $client['client_id'] ?>" class="btn btn-delete" onclick="return confirm('Удалить?')">Удалить</a>
+                    <a href="?edit=<?= $client['client_id'] ?>" class="btn btn-edit">✎ Редактировать</a>
+                    <a href="#" onclick="confirmDelete(<?= $client['client_id'] ?>)" 
+                       class="btn btn-delete">🗑️ Удалить</a>
                 </td>
             </tr>
             <?php endforeach; ?>
         </table>
     </div>
+    
+    <!-- Модальное окно подтверждения удаления -->
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close-modal" onclick="closeModal()">×</span>
+                <h3>⚠️ ПОДТВЕРЖДЕНИЕ УДАЛЕНИЯ</h3>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите удалить этого клиента?</p>
+                <p><strong>Это действие нельзя отменить!</strong></p>
+                <div class="tank-progress">
+                    <div class="progress-bar" style="width: 100%;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeModal()" class="btn">Отмена</button>
+                <button id="confirmDeleteBtn" class="btn btn-delete">УДАЛИТЬ</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="tank-footer">
+        Танковая база данных © 2024 | Все системы в норме
+    </div>
+    
+    <script>
+        let clientToDelete = null;
+        
+        function confirmDelete(clientId) {
+            clientToDelete = clientId;
+            document.getElementById('deleteModal').style.display = 'block';
+        }
+        
+        function closeModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+            clientToDelete = null;
+        }
+        
+        document.getElementById('confirmDeleteBtn').onclick = function() {
+            if (clientToDelete) {
+                window.location.href = '?delete=' + clientToDelete;
+            }
+        };
+        
+        // Поиск клиентов
+        document.getElementById('clientSearch').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('table tr');
+            
+            rows.forEach((row, index) => {
+                if (index === 0) return; // Пропускаем заголовок
+                
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            });
+        });
+        
+        // Закрытие модального окна при клике вне его
+        window.onclick = function(event) {
+            const modal = document.getElementById('deleteModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        };
+        
+        // Включить сканирующую линию
+        document.querySelector('.scanline').style.display = 'block';
+    </script>
 </body>
 </html>
