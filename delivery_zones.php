@@ -1,6 +1,10 @@
 <?php
 require_once 'functions.php';
 
+$isLoggedIn = isset($_SESSION['client_id']);
+$clientName = $_SESSION['client_name'] ?? '';
+$clientRole = $_SESSION['client_role'] ?? '';
+
 // Получение зон доставки
 $zones = getDeliveryZones();
 
@@ -82,9 +86,29 @@ if (isset($_GET['delete'])) {
     <div class="menu">
         <nav class="menu-nav">
             <a href="index.php" class="icon-tank">Главная</a>
-            <a href="orders.php" class="icon-military">Заказы</a>
-            <a href="delivery_zones.php" class="active icon-ammo">Зоны доставки</a>
-            <a href="warranties.php" class="icon-tank">Гарантии</a>
+            
+            <?php if ($isLoggedIn): ?>
+                <a href="orders.php" class="icon-military">Заказы</a>
+                <a href="clients.php" class="icon-tank">Клиенты</a>
+                <a href="components.php" class="icon-military">Комплектующие</a>
+                
+                <?php if ($userRole === 'admin'): ?>
+                    <a href="categories.php" class="icon-ammo">Категории</a>
+                    <a href="delivery_zones.php" class="active icon-tank">Доставка</a>
+                    <a href="warranties.php" class="icon-military">Гарантии</a>
+                <?php endif; ?>
+                
+                <div style="margin-left: auto; display: flex; gap: 10px; align-items: center;">
+                    <span style="color: var(--digital-green);">
+                        🎖️ <?= htmlspecialchars($username) ?>
+                    </span>
+                    <a href="logout.php" class="btn btn-delete" style="padding: 5px 10px;">Выход</a>
+                </div>
+            <?php else: ?>
+                <a href="login.php" class="icon-military">Вход</a>
+                <a href="register.php" class="icon-ammo">Регистрация</a>
+                <a href="orders.php" class="icon-tank">Заказы</a>
+            <?php endif; ?>
         </nav>
     </div>
     

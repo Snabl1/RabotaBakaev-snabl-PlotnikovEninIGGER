@@ -1,6 +1,10 @@
 <?php
 require_once 'functions.php';
 
+$isLoggedIn = isset($_SESSION['client_id']);
+$clientName = $_SESSION['client_name'] ?? '';
+$clientRole = $_SESSION['client_role'] ?? '';
+
 // Получаем статистику
 $stats = [
     'clients' => $pdo->query("SELECT COUNT(*) as count FROM clients")->fetch()['count'],
@@ -380,16 +384,33 @@ $warranty_stats = $pdo_warranty->query("
     </div>
     
     <div class="menu">
-        <nav class="menu-nav">
-            <a href="index.php" class="active icon-tank">Главная</a>
-            <a href="clients.php" class="icon-military">Клиенты</a>
-            <a href="categories.php" class="icon-ammo">Категории</a>
-            <a href="components.php" class="icon-tank">Комплектующие</a>
-            <a href="orders.php" class="icon-military">Заказы</a>
-            <a href="delivery_zones.php" class="icon-tank">Зоны доставки</a>
-            <a href="warranties.php" class="icon-military">Гарантии</a>
-        </nav>
-    </div>
+    <nav class="menu-nav">
+        <a href="index.php" class="<?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : '' ?> icon-tank">Главная</a>
+        
+        <?php if ($isLoggedIn): ?>
+            <a href="orders.php" class="<?= basename($_SERVER['PHP_SELF']) == 'orders.php' ? 'active' : '' ?> icon-military">Заказы</a>
+            <a href="clients.php" class="<?= basename($_SERVER['PHP_SELF']) == 'clients.php' ? 'active' : '' ?> icon-tank">Клиенты</a>
+            <a href="components.php" class="<?= basename($_SERVER['PHP_SELF']) == 'components.php' ? 'active' : '' ?> icon-military">Комплектующие</a>
+            
+            <?php if ($clientRole === 'admin'): ?>
+                <a href="categories.php" class="<?= basename($_SERVER['PHP_SELF']) == 'categories.php' ? 'active' : '' ?> icon-ammo">Категории</a>
+                <a href="delivery_zones.php" class="<?= basename($_SERVER['PHP_SELF']) == 'delivery_zones.php' ? 'active' : '' ?> icon-tank">Доставка</a>
+                <a href="warranties.php" class="<?= basename($_SERVER['PHP_SELF']) == 'warranties.php' ? 'active' : '' ?> icon-military">Гарантии</a>
+            <?php endif; ?>
+            
+            <div style="margin-left: auto; display: flex; gap: 10px; align-items: center;">
+                <span style="color: var(--digital-green);">
+                    🎖️ <?= htmlspecialchars($clientName) ?>
+                </span>
+                <a href="logout.php" class="btn btn-delete" style="padding: 5px 10px;">Выход</a>
+            </div>
+        <?php else: ?>
+            <a href="login.php" class="<?= basename($_SERVER['PHP_SELF']) == 'login.php' ? 'active' : '' ?> icon-military">Вход</a>
+            <a href="register.php" class="<?= basename($_SERVER['PHP_SELF']) == 'register.php' ? 'active' : '' ?> icon-ammo">Регистрация</a>
+            <a href="orders.php" class="<?= basename($_SERVER['PHP_SELF']) == 'orders.php' ? 'active' : '' ?> icon-tank">Заказы</a>
+        <?php endif; ?>
+    </nav>
+</div>
     
     <div class="container">
         <div class="tank-logo">

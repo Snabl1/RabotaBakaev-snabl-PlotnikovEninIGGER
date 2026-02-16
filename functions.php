@@ -3,12 +3,56 @@ require_once 'config.php';
 require_once 'config_delivery.php';
 require_once 'config_warranty.php';
 
+// Старт сессии если не начата
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Проверка авторизации
+function isLoggedIn() {
+    return isset($_SESSION['client_id']);
+}
+
+// Получение текущего клиента
+function getCurrentClient() {
+    global $pdo;
+    if (!isset($_SESSION['client_id'])) {
+        return null;
+    }
+    
+    $stmt = $pdo->prepare("SELECT * FROM clients WHERE client_id = ?");
+    $stmt->execute([$_SESSION['client_id']]);
+    return $stmt->fetch();
+}
+
+// Проверка прав администратора
+function isAdmin() {
+    return isset($_SESSION['client_role']) && $_SESSION['client_role'] === 'admin';
+}
+
+// Требование авторизации
+function requireAuth() {
+    if (!isLoggedIn()) {
+        header("Location: login.php");
+        exit;
+    }
+}
+
+// Требование прав администратора
+function requireAdmin() {
+    requireAuth();
+    if (!isAdmin()) {
+        die("Доступ запрещен! Требуются права администратора.");
+    }
+}
+
+// Остальные функции...
 function safeDelete($pdo, $table, $id_field, $id) {
     $stmt = $pdo->prepare("DELETE FROM $table WHERE $id_field = ?");
     return $stmt->execute([$id]);
 }
 
-// Получение зон доставки - используем $pdo_delivery
+// Получение зон доставки
 function getDeliveryZones() {
     global $pdo_delivery;
     try {
@@ -19,7 +63,7 @@ function getDeliveryZones() {
     }
 }
 
-// Получение гарантий - используем $pdo_warranty
+// Получение гарантий
 function getWarranties($component_id = null) {
     global $pdo_warranty;
     
@@ -44,7 +88,7 @@ function getWarranties($component_id = null) {
     }
 }
 
-// Расчет стоимости доставки - используем $pdo_delivery
+// Расчет стоимости доставки
 function calculateDeliveryCost($zone_id, $distance = null) {
     global $pdo_delivery;
     
@@ -67,7 +111,7 @@ function calculateDeliveryCost($zone_id, $distance = null) {
     }
 }
 
-// Расчет стоимости гарантии - используем $pdo_warranty
+// Расчет стоимости гарантии
 function calculateWarrantyCost($warranty_id, $component_price) {
     global $pdo_warranty;
     
@@ -85,7 +129,6 @@ function calculateWarrantyCost($warranty_id, $component_price) {
     }
 }
 
-// Остальные функции остаются без изменений...
 // Функция для получения записи
 function getRecord($pdo, $table, $id_field, $id) {
     $stmt = $pdo->prepare("SELECT * FROM $table WHERE $id_field = ?");
@@ -97,7 +140,6 @@ function getRecord($pdo, $table, $id_field, $id) {
 function safeDeleteWithCheck($pdo, $table, $id_field, $id, $dependencies = []) {
     $pdo->beginTransaction();
     try {
-        // Проверяем зависимости
         foreach ($dependencies as $dep_table => $dep_field) {
             $stmt = $pdo->prepare("SELECT COUNT(*) as count FROM $dep_table WHERE $dep_field = ?");
             $stmt->execute([$id]);
@@ -108,7 +150,6 @@ function safeDeleteWithCheck($pdo, $table, $id_field, $id, $dependencies = []) {
             }
         }
         
-        // Удаляем
         $stmt = $pdo->prepare("DELETE FROM $table WHERE $id_field = ?");
         $stmt->execute([$id]);
         
@@ -122,17 +163,9 @@ function safeDeleteWithCheck($pdo, $table, $id_field, $id, $dependencies = []) {
 
 // Функция для редиректа с сообщением
 function redirectWithMessage($url, $type, $message) {
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
-    }
     $_SESSION['flash'] = ['type' => $type, 'message' => $message];
     header("Location: $url");
     exit;
-}
-
-// Старт сессии если не начата
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
 }
 
 // Генерация CSRF токена
