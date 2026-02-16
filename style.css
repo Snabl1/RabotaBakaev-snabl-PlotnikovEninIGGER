@@ -480,6 +480,35 @@ input[type="checkbox"], input[type="radio"] {
     background: rgba(218, 165, 32, 0.1);
 }
 
+/* Индикатор силы пароля (регистрация) */
+.password-strength {
+    height: 6px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 3px;
+    margin-top: 6px;
+    overflow: hidden;
+}
+.strength-bar {
+    height: 100%;
+    width: 0;
+    border-radius: 3px;
+    transition: width 0.2s, background 0.2s;
+}
+.strength-bar.weak {
+    background: var(--danger-red);
+}
+.strength-bar.medium {
+    background: var(--ammo-gold);
+}
+.strength-bar.strong {
+    background: var(--digital-green);
+}
+input.password.error,
+input.error {
+    border-color: var(--danger-red);
+    box-shadow: 0 0 8px rgba(204, 0, 0, 0.3);
+}
+
 /* ===== СПЕЦИАЛЬНЫЕ ЭЛЕМЕНТЫ ===== */
 .price {
     color: var(--ammo-gold);

@@ -16,8 +16,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $address = trim($_POST['address'] ?? '');
     
     // Валидация
+    $agreement = !empty($_POST['agreement']);
     if (empty($username) || empty($password) || empty($email) || empty($last_name) || empty($first_name) || empty($address)) {
         $error = 'Заполните все обязательные поля!';
+    } elseif (!$agreement) {
+        $error = 'Необходимо согласие с условиями обслуживания!';
     } elseif ($password !== $confirm_password) {
         $error = 'Пароли не совпадают!';
     } elseif (strlen($password) < 6) {
@@ -36,13 +39,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Хешируем пароль
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
             
-            // Вставляем клиента
-            $stmt = $pdo->prepare("
-                INSERT INTO clients (username, password, email, last_name, first_name, middle_name, phone, address, role) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'user')
-            ");
+            // Вставляем клиента (is_active = 1 чтобы сразу можно было войти)
+            $ok = false;
+            try {
+                $stmt = $pdo->prepare("
+                    INSERT INTO clients (username, password, email, last_name, first_name, middle_name, phone, address, role, is_active) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'user', 1)
+                ");
+                $ok = $stmt->execute([$username, $hashed_password, $email, $last_name, $first_name, $middle_name, $phone, $address]);
+            } catch (PDOException $e) {
+                // Если колонки is_active нет — вставляем без неё
+                if (strpos($e->getMessage(), 'is_active') !== false) {
+                    $stmt = $pdo->prepare("
+                        INSERT INTO clients (username, password, email, last_name, first_name, middle_name, phone, address, role) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'user')
+                    ");
+                    $ok = $stmt->execute([$username, $hashed_password, $email, $last_name, $first_name, $middle_name, $phone, $address]);
+                } else {
+                    throw $e;
+                }
+            }
             
-            if ($stmt->execute([$username, $hashed_password, $email, $last_name, $first_name, $middle_name, $phone, $address])) {
+            if ($ok) {
                 $success = 'Регистрация успешна! Теперь вы можете войти.';
                 $_POST = []; // Очищаем форму
             } else {
@@ -217,9 +235,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             strengthBar.className = 'strength-bar';
             
             if (pwd.length === 0) {
-                strengthBar.style.width = '0';
+                strengthBar.style.width = '0%';
                 return;
             }
+            
+            var width = Math.min(100, (strength / 5) * 100);
+            strengthBar.style.width = width + '%';
             
             if (strength <= 2) {
                 strengthBar.classList.add('weak');

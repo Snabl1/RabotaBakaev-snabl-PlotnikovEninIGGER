@@ -169,7 +169,7 @@ $orders = $pdo->query("
                 <a href="clients.php" class="icon-tank">Клиенты</a>
                 <a href="components.php" class="icon-military">Комплектующие</a>
                 
-                <?php if ($userRole === 'admin'): ?>
+                <?php if ($clientRole === 'admin'): ?>
                     <a href="categories.php" class="icon-ammo">Категории</a>
                     <a href="delivery_zones.php" class="icon-tank">Доставка</a>
                     <a href="warranties.php" class="icon-military">Гарантии</a>

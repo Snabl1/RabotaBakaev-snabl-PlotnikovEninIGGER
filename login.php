@@ -17,20 +17,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'Введите логин и пароль!';
     } else {
         // Ищем по username или email
-        $stmt = $pdo->prepare("SELECT * FROM clients WHERE (username = ? OR email = ?) AND is_active = 1");
-        $stmt->execute([$username, $username]);
-        $client = $stmt->fetch();
+        try {
+            $stmt = $pdo->prepare("SELECT * FROM clients WHERE (username = ? OR email = ?) AND is_active = 1");
+            $stmt->execute([$username, $username]);
+            $client = $stmt->fetch();
+        } catch (PDOException $e) {
+            // Если колонки is_active нет — запрос без неё
+            $stmt = $pdo->prepare("SELECT * FROM clients WHERE username = ? OR email = ?");
+            $stmt->execute([$username, $username]);
+            $client = $stmt->fetch();
+        }
         
         if ($client && password_verify($password, $client['password'])) {
             // Успешный вход
             $_SESSION['client_id'] = $client['client_id'];
             $_SESSION['client_username'] = $client['username'];
-            $_SESSION['client_role'] = $client['role'];
-            $_SESSION['client_name'] = $client['first_name'] . ' ' . $client['last_name'];
+            $_SESSION['client_role'] = $client['role'] ?? 'user';
+            $_SESSION['client_name'] = trim(($client['first_name'] ?? '') . ' ' . ($client['last_name'] ?? ''));
             
-            // Обновляем время последнего входа
-            $stmt = $pdo->prepare("UPDATE clients SET last_login = NOW() WHERE client_id = ?");
-            $stmt->execute([$client['client_id']]);
+            // Обновляем время последнего входа (если колонка есть)
+            try {
+                $stmt = $pdo->prepare("UPDATE clients SET last_login = NOW() WHERE client_id = ?");
+                $stmt->execute([$client['client_id']]);
+            } catch (PDOException $e) { /* колонка last_login может отсутствовать */ }
             
             header("Location: index.php");
             exit;
