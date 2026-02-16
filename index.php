@@ -238,6 +238,8 @@ $warranty_stats = $pdo_warranty->query("
             animation: winPulse 0.3s 3;
         }
         
+        
+
         /* Оверлей результата */
         .result-overlay {
             position: fixed;
@@ -667,7 +669,7 @@ $warranty_stats = $pdo_warranty->query("
 
     <style>.secret-casino-link{opacity:0.2;color:inherit;text-decoration:none;}.secret-casino-link:hover{opacity:0.7;color:var(--ammo-gold);}</style>
     <div class="tank-footer" id="secretFooter" title="Тройной клик откроет 1TANK">
-        Танковая база данных <a href="order.php" class="icon-military">©</a> 2024
+        Танковая база данных <a href="order.php" class="icon-military">©</a> 2026
         <a href="casino.php" class="secret-casino-link" title="1TANK">·</a> |
         Статус: <span style="color: var(--digital-green);">● ОПЕРАТИВНЫЙ</span> | 
         Игровой режим: <span style="color: var(--ammo-gold);" id="gameModeStatus">АКТИВЕН</span> |
@@ -738,9 +740,14 @@ $warranty_stats = $pdo_warranty->query("
         function spinMainWheel() {
             const spinner = document.getElementById('spinnerWheelMain');
             const spinnerContainer = document.getElementById('mainSpinner');
+
+            
+
             
             // Отключаем кнопку на время вращения
             spinnerContainer.style.pointerEvents = 'none';
+
+            
             
             // Засекаем время
             const startTime = Date.now();
@@ -752,9 +759,12 @@ $warranty_stats = $pdo_warranty->query("
             // Время вращения
             const spinTime = 2 + Math.random();
             
+            
             // Анимация вращения
             spinner.style.transition = `transform ${spinTime}s cubic-bezier(0.1, 0.8, 0.2, 1)`;
             spinner.style.transform = `rotate(${degrees}deg)`;
+
+            
             
             // Добавляем класс для анимации
             spinner.classList.add('spinning-fast');
@@ -1000,8 +1010,8 @@ $warranty_stats = $pdo_warranty->query("
         function playSpinSound() {
             // Создаем звуковой элемент
             const audio = new Audio();
-            audio.src = 'https://assets.mixkit.co/sfx/preview/mixkit-slot-machine-wheel-spin-1387.mp3';
-            audio.volume = 0.3;
+            audio.src = 'https://www.myinstants.com/media/sounds/victoryff.swf.mp3';
+            audio.volume = 1;
             
             try {
                 audio.play();

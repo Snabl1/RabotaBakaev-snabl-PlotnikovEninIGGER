@@ -859,7 +859,7 @@ $total_revenue = $pdo->query("SELECT SUM(total_cost) as total FROM orders")->fet
             </div>
             
             <div style="margin-top: 40px; color: var(--casino-chip); font-size: 0.9rem;">
-                <i class="fas fa-exclamation-triangle"></i> Играйте ответственно. Минимальный возраст: 18+
+                <i class="fas fa-exclamation-triangle"></i> Играйте ответственно. Минимальный возраст: 3+
             </div>
         </div>
     </div>
