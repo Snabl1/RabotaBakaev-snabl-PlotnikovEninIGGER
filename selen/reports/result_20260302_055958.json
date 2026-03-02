@@ -1,0 +1,135 @@
+{
+  "timestamp": "2026-03-02T05:59:58.339026",
+  "screenshot_dir": "",
+  "results": [],
+  "total": 0,
+  "ok_count": 0,
+  "rate": 0,
+  "duration_sec": 2.6,
+  "load_graph": "",
+  "load_stats": null,
+  "network_graph": "",
+  "network_stats": null,
+  "code_quality": {
+    "php_syntax_checked": 0,
+    "php_syntax_errors": [],
+    "php_syntax_ok": true,
+    "psr_tool": null,
+    "psr_standard": "PSR2",
+    "psr_ok": null,
+    "psr_output_tail": null
+  },
+  "code_complexity": {
+    "totals": {
+      "files": 23,
+      "chars": 359361,
+      "spaces": 127072,
+      "newlines": 8977,
+      "tabs": 0,
+      "operators": 25397,
+      "operands": 28027,
+      "loops": 97,
+      "conditions": 2170
+    },
+    "top_files": [
+      {
+        "file": "game.php",
+        "chars": 70750,
+        "operators": 3914,
+        "operands": 5157,
+        "loops": 31,
+        "conditions": 117
+      },
+      {
+        "file": "casino.php",
+        "chars": 59503,
+        "operators": 3948,
+        "operands": 4799,
+        "loops": 4,
+        "conditions": 60
+      },
+      {
+        "file": "index.php",
+        "chars": 46588,
+        "operators": 3356,
+        "operands": 3611,
+        "loops": 7,
+        "conditions": 132
+      },
+      {
+        "file": "report.php",
+        "chars": 18814,
+        "operators": 2179,
+        "operands": 1804,
+        "loops": 8,
+        "conditions": 338
+      },
+      {
+        "file": "orders.php",
+        "chars": 29797,
+        "operators": 2003,
+        "operands": 1985,
+        "loops": 13,
+        "conditions": 245
+      },
+      {
+        "file": "clients.php",
+        "chars": 16650,
+        "operators": 1297,
+        "operands": 1402,
+        "loops": 2,
+        "conditions": 194
+      },
+      {
+        "file": "warranties.php",
+        "chars": 16915,
+        "operators": 1297,
+        "operands": 1284,
+        "loops": 5,
+        "conditions": 168
+      },
+      {
+        "file": "order_receipt.php",
+        "chars": 15651,
+        "operators": 1280,
+        "operands": 1245,
+        "loops": 1,
+        "conditions": 119
+      },
+      {
+        "file": "components.php",
+        "chars": 12714,
+        "operators": 1116,
+        "operands": 1022,
+        "loops": 4,
+        "conditions": 120
+      },
+      {
+        "file": "delivery_zones.php",
+        "chars": 12815,
+        "operators": 1024,
+        "operands": 960,
+        "loops": 2,
+        "conditions": 143
+      }
+    ]
+  },
+  "backup_info": [
+    {
+      "path": "C:\\Users\\admin301\\Downloads\\RabotaBakaev-snabl-PlotnikovEninIGGER-ver4.0-selenium-raspredelena-baza-danix-Bakaev-Plotnikov-Enin\\backup\\20260302_055955",
+      "created_at": "2026-03-02T05:59:55.857858"
+    }
+  ],
+  "git_info": {
+    "enabled": true,
+    "scheme": "per_run",
+    "runs": [
+      {
+        "enabled": false,
+        "ok": false,
+        "message": "Auto-save (before tests) 2026-03-02 05:59:55",
+        "error": "git not available"
+      }
+    ]
+  }
+}

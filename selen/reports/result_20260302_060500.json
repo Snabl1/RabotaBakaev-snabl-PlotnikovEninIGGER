@@ -1,0 +1,298 @@
+{
+  "timestamp": "2026-03-02T06:05:00.194564",
+  "screenshot_dir": "selen/screenshots/20260302_060247",
+  "results": [
+    {
+      "criterion": "Верификация",
+      "test": "Логин и пароль",
+      "status": "✅ УСПЕХ",
+      "success": true,
+      "details": "Вход выполнен (скриншот: 01_Логин_после_входа_060259.png)",
+      "screenshot": "01_Логин_после_входа_060259.png"
+    },
+    {
+      "criterion": "Валидность",
+      "test": "Неверный логин/пароль",
+      "status": "❌ ОШИБКА",
+      "success": false,
+      "details": "Ожидаем сообщение об ошибке (скриншот: 02_Неверный_логин_060334.png)",
+      "screenshot": "02_Неверный_логин_060334.png"
+    },
+    {
+      "criterion": "Верификация",
+      "test": "Навигация: Заказы",
+      "status": "✅ УСПЕХ",
+      "success": true,
+      "details": "Заказы - Танковая База (скриншот: 03_Навигация_Заказы_060336.png)",
+      "screenshot": "03_Навигация_Заказы_060336.png"
+    },
+    {
+      "criterion": "Верификация",
+      "test": "Навигация: Клиенты",
+      "status": "✅ УСПЕХ",
+      "success": true,
+      "details": "Клиенты - Танковая База (скриншот: 04_Навигация_Клиенты_060338.png)",
+      "screenshot": "04_Навигация_Клиенты_060338.png"
+    },
+    {
+      "criterion": "Верификация",
+      "test": "Навигация: Комплектующие",
+      "status": "✅ УСПЕХ",
+      "success": true,
+      "details": "Комплектующие - Танковая База (скриншот: 05_Навигация_Комплектующие_060340.png)",
+      "screenshot": "05_Навигация_Комплектующие_060340.png"
+    },
+    {
+      "criterion": "Верификация",
+      "test": "Навигация: Категории",
+      "status": "✅ УСПЕХ",
+      "success": true,
+      "details": "Категории - Танковая База (скриншот: 06_Навигация_Категории_060343.png)",
+      "screenshot": "06_Навигация_Категории_060343.png"
+    },
+    {
+      "criterion": "Верификация",
+      "test": "Навигация: Зоны доставки",
+      "status": "✅ УСПЕХ",
+      "success": true,
+      "details": "Зоны доставки - Танковая База (скриншот: 07_Навигация_Зоны_доставки_060345.png)",
+      "screenshot": "07_Навигация_Зоны_доставки_060345.png"
+    },
+    {
+      "criterion": "Верификация",
+      "test": "Навигация: Гарантии",
+      "status": "✅ УСПЕХ",
+      "success": true,
+      "details": "Гарантии - Танковая База (скриншот: 08_Навигация_Гарантии_060347.png)",
+      "screenshot": "08_Навигация_Гарантии_060347.png"
+    },
+    {
+      "criterion": "Верификация",
+      "test": "Комплектующие",
+      "status": "✅ УСПЕХ",
+      "success": true,
+      "details": "Таблица найдена (скриншот: 09_Комплектующие_060350.png)",
+      "screenshot": "09_Комплектующие_060350.png"
+    },
+    {
+      "criterion": "Верификация",
+      "test": "Форма заказа",
+      "status": "✅ УСПЕХ",
+      "success": true,
+      "details": "Форма и итог найдены (скриншот: 10_Заказы_страница_060354.png)",
+      "screenshot": "10_Заказы_страница_060354.png"
+    },
+    {
+      "criterion": "Верификация",
+      "test": "Зоны доставки",
+      "status": "✅ УСПЕХ",
+      "success": true,
+      "details": "Форма найдена (скриншот: 11_Зоны_доставки_060356.png)",
+      "screenshot": "11_Зоны_доставки_060356.png"
+    },
+    {
+      "criterion": "Верификация",
+      "test": "Гарантии",
+      "status": "✅ УСПЕХ",
+      "success": true,
+      "details": "Страница загружена (скриншот: 12_Гарантии_060358.png)",
+      "screenshot": "12_Гарантии_060358.png"
+    },
+    {
+      "criterion": "Валидность",
+      "test": "Добавление категории",
+      "status": "✅ УСПЕХ",
+      "success": true,
+      "details": "Проверка по тексту (скриншот: 13_Категории_добавление_060403.png)",
+      "screenshot": "13_Категории_добавление_060403.png"
+    },
+    {
+      "criterion": "Валидность",
+      "test": "Добавление клиента",
+      "status": "✅ УСПЕХ",
+      "success": true,
+      "details": "Клиент добавлен (скриншот: 15_Клиенты_после_добавления_060409.png)",
+      "screenshot": "15_Клиенты_после_добавления_060409.png"
+    },
+    {
+      "criterion": "Свой",
+      "test": "Контроль доступа (без сессии)",
+      "status": "✅ УСПЕХ",
+      "success": true,
+      "details": "Админ-страницы должны требовать вход",
+      "screenshot": null
+    }
+  ],
+  "total": 15,
+  "ok_count": 14,
+  "rate": 93.3,
+  "duration_sec": 133.2,
+  "load_graph": "selen/reports/load_test_20260302_060455.png",
+  "load_stats": [
+    {
+      "concurrent": 1,
+      "avg_ms": 82.65739333335962,
+      "success_rate": 100.0
+    },
+    {
+      "concurrent": 5,
+      "avg_ms": 313.230589999921,
+      "success_rate": 100.0
+    },
+    {
+      "concurrent": 10,
+      "avg_ms": 613.6174066666779,
+      "success_rate": 100.0
+    },
+    {
+      "concurrent": 20,
+      "avg_ms": 1088.1131466666527,
+      "success_rate": 100.0
+    },
+    {
+      "concurrent": 30,
+      "avg_ms": 980.9456000000409,
+      "success_rate": 100.0
+    },
+    {
+      "concurrent": 50,
+      "avg_ms": 884.7187433333602,
+      "success_rate": 100.0
+    }
+  ],
+  "network_graph": "selen/reports/network_20260302_060500.png",
+  "network_stats": {
+    "requests": 50,
+    "success_rate": 100.0,
+    "packet_loss": 0.0,
+    "latency_min": 50.682099999903585,
+    "latency_max": 787.8033000001778,
+    "latency_avg": 575.439802000019,
+    "latency_p95": 767.5407000001542,
+    "rps": 15.146714102138004,
+    "kbps": 5981.887067009205
+  },
+  "code_quality": {
+    "php_syntax_checked": 0,
+    "php_syntax_errors": [],
+    "php_syntax_ok": true,
+    "psr_tool": null,
+    "psr_standard": "PSR2",
+    "psr_ok": null,
+    "psr_output_tail": null
+  },
+  "code_complexity": {
+    "totals": {
+      "files": 23,
+      "chars": 359361,
+      "spaces": 127072,
+      "newlines": 8977,
+      "tabs": 0,
+      "operators": 25397,
+      "operands": 28027,
+      "loops": 97,
+      "conditions": 2170
+    },
+    "top_files": [
+      {
+        "file": "game.php",
+        "chars": 70750,
+        "operators": 3914,
+        "operands": 5157,
+        "loops": 31,
+        "conditions": 117
+      },
+      {
+        "file": "casino.php",
+        "chars": 59503,
+        "operators": 3948,
+        "operands": 4799,
+        "loops": 4,
+        "conditions": 60
+      },
+      {
+        "file": "index.php",
+        "chars": 46588,
+        "operators": 3356,
+        "operands": 3611,
+        "loops": 7,
+        "conditions": 132
+      },
+      {
+        "file": "report.php",
+        "chars": 18814,
+        "operators": 2179,
+        "operands": 1804,
+        "loops": 8,
+        "conditions": 338
+      },
+      {
+        "file": "orders.php",
+        "chars": 29797,
+        "operators": 2003,
+        "operands": 1985,
+        "loops": 13,
+        "conditions": 245
+      },
+      {
+        "file": "clients.php",
+        "chars": 16650,
+        "operators": 1297,
+        "operands": 1402,
+        "loops": 2,
+        "conditions": 194
+      },
+      {
+        "file": "warranties.php",
+        "chars": 16915,
+        "operators": 1297,
+        "operands": 1284,
+        "loops": 5,
+        "conditions": 168
+      },
+      {
+        "file": "order_receipt.php",
+        "chars": 15651,
+        "operators": 1280,
+        "operands": 1245,
+        "loops": 1,
+        "conditions": 119
+      },
+      {
+        "file": "components.php",
+        "chars": 12714,
+        "operators": 1116,
+        "operands": 1022,
+        "loops": 4,
+        "conditions": 120
+      },
+      {
+        "file": "delivery_zones.php",
+        "chars": 12815,
+        "operators": 1024,
+        "operands": 960,
+        "loops": 2,
+        "conditions": 143
+      }
+    ]
+  },
+  "backup_info": null,
+  "git_info": {
+    "enabled": true,
+    "scheme": "per_run",
+    "runs": [
+      {
+        "enabled": false,
+        "ok": false,
+        "message": "Auto-save (before tests) 2026-03-02 06:02:47",
+        "error": "git not available"
+      },
+      {
+        "enabled": false,
+        "ok": false,
+        "message": "Auto-save (after tests) 2026-03-02 06:05:00",
+        "error": "git not available"
+      }
+    ]
+  }
+}
