@@ -40,6 +40,19 @@ $gitScheme = $_POST['git_scheme'] ?? 'per_run';
 $gitScheme = in_array($gitScheme, ['per_run', 'before_after_fix'], true) ? $gitScheme : 'per_run';
 putenv('GIT_SAVE_SCHEME=' . $gitScheme);
 
+// Набор тестов: smoke/regression/full (влияет на то, что запускает Python-раннер)
+$suite = strtolower(trim((string)($_POST['test_suite'] ?? 'full')));
+if (!in_array($suite, ['smoke', 'regression', 'full'], true)) {
+    $suite = 'full';
+}
+putenv('TEST_SUITE=' . $suite);
+
+// Ретраи Selenium для нестабильных прогонов (0..3)
+$retries = (int)($_POST['selenium_retries'] ?? 1);
+if ($retries < 0) $retries = 0;
+if ($retries > 3) $retries = 3;
+putenv('SELENIUM_RETRIES=' . $retries);
+
 $projectRoot = __DIR__;
 $selenDir = $projectRoot . DIRECTORY_SEPARATOR . 'selen';
 $mainPy = $selenDir . DIRECTORY_SEPARATOR . 'main.py';

@@ -88,6 +88,26 @@ $clientRole = $_SESSION['client_role'] ?? 'admin';
         <h2>▶ Запуск тестирования</h2>
         <form method="post" action="run_tests.php" style="display: grid; gap: 12px;">
             <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
+                <label style="display:flex; gap:8px; align-items:center;">
+                    Набор:
+                    <select name="test_suite" style="padding: 6px 10px; border-radius: 8px; background: #2d2d44; color: #fff; border: 1px solid #444;">
+                        <option value="smoke">smoke (быстро)</option>
+                        <option value="regression">regression (средне)</option>
+                        <option value="full" selected>full (всё)</option>
+                    </select>
+                </label>
+                <label style="display:flex; gap:8px; align-items:center;">
+                    Ретраи Selenium:
+                    <select name="selenium_retries" style="padding: 6px 10px; border-radius: 8px; background: #2d2d44; color: #fff; border: 1px solid #444;">
+                        <option value="0">0</option>
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </label>
+                <span style="color:#888;">smoke пропускает нагрузку/сеть и часть сценариев</span>
+            </div>
+            <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
                 <strong style="color:#888;">Критерии:</strong>
                 <label><input type="checkbox" name="criteria[]" value="validity" checked> Валидность</label>
                 <label><input type="checkbox" name="criteria[]" value="verification" checked> Верификация</label>

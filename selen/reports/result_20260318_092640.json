@@ -1,0 +1,125 @@
+{
+  "timestamp": "2026-03-18T09:26:40.341141",
+  "test_suite": "full",
+  "selenium_retries": 1,
+  "screenshot_dir": "selen/screenshots/20260318_092631",
+  "results": [],
+  "total": 0,
+  "ok_count": 0,
+  "rate": 0,
+  "duration_sec": 9.3,
+  "load_graph": "",
+  "load_stats": null,
+  "network_graph": "",
+  "network_stats": null,
+  "code_quality": null,
+  "code_complexity": {
+    "totals": {
+      "files": 25,
+      "chars": 367320,
+      "spaces": 129021,
+      "newlines": 9164,
+      "tabs": 0,
+      "operators": 26323,
+      "operands": 28753,
+      "loops": 99,
+      "conditions": 2375
+    },
+    "top_files": [
+      {
+        "file": "game.php",
+        "chars": 70750,
+        "operators": 3914,
+        "operands": 5157,
+        "loops": 31,
+        "conditions": 117
+      },
+      {
+        "file": "casino.php",
+        "chars": 59503,
+        "operators": 3948,
+        "operands": 4799,
+        "loops": 4,
+        "conditions": 60
+      },
+      {
+        "file": "index.php",
+        "chars": 46588,
+        "operators": 3356,
+        "operands": 3611,
+        "loops": 7,
+        "conditions": 132
+      },
+      {
+        "file": "report.php",
+        "chars": 20312,
+        "operators": 2318,
+        "operands": 1944,
+        "loops": 8,
+        "conditions": 346
+      },
+      {
+        "file": "orders.php",
+        "chars": 29797,
+        "operators": 2003,
+        "operands": 1985,
+        "loops": 13,
+        "conditions": 245
+      },
+      {
+        "file": "clients.php",
+        "chars": 16650,
+        "operators": 1297,
+        "operands": 1402,
+        "loops": 2,
+        "conditions": 194
+      },
+      {
+        "file": "warranties.php",
+        "chars": 16915,
+        "operators": 1297,
+        "operands": 1284,
+        "loops": 5,
+        "conditions": 168
+      },
+      {
+        "file": "order_receipt.php",
+        "chars": 15651,
+        "operators": 1280,
+        "operands": 1245,
+        "loops": 1,
+        "conditions": 119
+      },
+      {
+        "file": "components.php",
+        "chars": 12714,
+        "operators": 1116,
+        "operands": 1022,
+        "loops": 4,
+        "conditions": 120
+      },
+      {
+        "file": "delivery_zones.php",
+        "chars": 12815,
+        "operators": 1024,
+        "operands": 960,
+        "loops": 2,
+        "conditions": 143
+      }
+    ]
+  },
+  "backup_info": null,
+  "git_info": {
+    "enabled": true,
+    "scheme": "per_run",
+    "runs": [
+      {
+        "enabled": false,
+        "ok": false,
+        "message": "Auto-save (before tests) 2026-03-18 09:26:31",
+        "error": "git not available"
+      }
+    ]
+  },
+  "junit_xml": "selen/reports/junit_latest.xml"
+}

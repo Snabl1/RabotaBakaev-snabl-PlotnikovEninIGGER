@@ -28,6 +28,7 @@ import shutil
 from datetime import datetime
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from urllib.request import Request, urlopen
+from xml.etree import ElementTree as ET
 
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service as ChromeService
@@ -75,6 +76,7 @@ _report_code_quality = None
 _report_code_complexity = None
 _report_backup_info = None
 _report_git_info = None
+_report_junit_xml_path = None
 
 
 def _env_flag(name: str, default: bool = False) -> bool:
@@ -87,6 +89,68 @@ def _env_flag(name: str, default: bool = False) -> bool:
 def _env_csv(name: str, default: str = "") -> list:
     v = os.environ.get(name, default)
     return [p.strip() for p in str(v).split(",") if p.strip()]
+
+def _env_int(name: str, default: int = 0, min_v: int | None = None, max_v: int | None = None) -> int:
+    try:
+        v = int(str(os.environ.get(name, default)).strip())
+    except Exception:
+        v = default
+    if min_v is not None:
+        v = max(min_v, v)
+    if max_v is not None:
+        v = min(max_v, v)
+    return v
+
+def _get_test_suite() -> str:
+    suite = str(os.environ.get("TEST_SUITE", "full")).strip().lower()
+    if suite not in ("smoke", "regression", "full"):
+        suite = "full"
+    return suite
+
+def _now_stamp() -> str:
+    return datetime.now().strftime("%Y%m%d_%H%M%S")
+
+def write_junit_report(root: str, suite_name: str, results: list, duration_sec: float, out_dir: str) -> str | None:
+    """
+    JUnit XML отчёт (фишка из CI-практик): удобно парсится в GitLab/GitHub/TeamCity.
+    results: список элементов self.results (selenium) + возможно элементы без скриншота.
+    """
+    try:
+        testsuite = ET.Element("testsuite")
+        testsuite.set("name", suite_name)
+        testsuite.set("tests", str(len(results)))
+        failures = sum(1 for r in results if not r.get("success"))
+        testsuite.set("failures", str(failures))
+        testsuite.set("errors", "0")
+        testsuite.set("time", f"{max(0.0, float(duration_sec)):.3f}")
+        for r in results:
+            name = (r.get("criterion", "") + " · " if r.get("criterion") else "") + str(r.get("test", ""))
+            tc = ET.SubElement(testsuite, "testcase")
+            tc.set("classname", "selenium")
+            tc.set("name", name)
+            tc.set("time", "0")
+            details = str(r.get("details", "") or "")
+            if details:
+                so = ET.SubElement(tc, "system-out")
+                so.text = details
+            if not r.get("success", False):
+                fl = ET.SubElement(tc, "failure")
+                fl.set("message", str(r.get("status", "FAILED")))
+                fl.text = details or "failed"
+        testsuites = ET.Element("testsuites")
+        testsuites.append(testsuite)
+
+        os.makedirs(out_dir, exist_ok=True)
+        path_latest = os.path.join(out_dir, "junit_latest.xml")
+        path_ts = os.path.join(out_dir, f"junit_{_now_stamp()}.xml")
+        ET.ElementTree(testsuites).write(path_latest, encoding="utf-8", xml_declaration=True)
+        ET.ElementTree(testsuites).write(path_ts, encoding="utf-8", xml_declaration=True)
+        # Для веб-отчёта — удобнее хранить относительный путь к latest
+        rel = os.path.relpath(path_latest, root).replace("\\", "/")
+        return rel
+    except Exception as e:
+        console.print(f"[dim]JUnit: {e}[/dim]")
+        return None
 
 def run_code_standards_check():
     """Проверка PHP: синтаксис (php -l) и соответствие PSR-1/PSR-2 (phpcs при наличии)."""
@@ -944,6 +1008,8 @@ class PHPSiteTester:
         run_code_complexity_check()
 
         root = cfg.PROJECT_ROOT
+        suite = _get_test_suite()
+        selenium_retries = _env_int("SELENIUM_RETRIES", 1, 0, 3)
 
         # 4. Бекап (если включён) — "до изменения"
         if getattr(cfg, "DO_BACKUP", False):
@@ -972,7 +1038,11 @@ class PHPSiteTester:
             run_code_standards_check()
 
         # 3. БД на пустоты
-        run_db_empty_check()
+        # В smoke обычно не трогаем БД (могут не быть креды/доступ), в остальных — да
+        if suite in ("regression", "full"):
+            run_db_empty_check()
+        else:
+            console.print("[dim]Smoke: проверка БД пропущена[/dim]")
 
         # Проверка доступности сервера — без неё Selenium и нагрузочные тесты бессмысленны
         if not is_server_reachable(self.base_url):
@@ -1009,27 +1079,50 @@ class PHPSiteTester:
                     ("Категории", self.test_categories),
                     ("Клиенты", self.test_clients),
                 ])
+            # Smoke: оставляем только самый быстрый набор UI (проверить, что живо)
+            if suite == "smoke":
+                selected = [x for x in selected if x[0] in ("Навигация", "Комплектующие", "Заказы")]
             if selected:
                 with Progress(SpinnerColumn(), TextColumn("[progress.description]{task.description}"), console=self.console) as progress:
                     task = progress.add_task("[cyan]Тесты...", total=len(selected))
                     for name, func in selected:
                         progress.update(task, description=f"[cyan] {name}")
-                        func()
+                        self._run_with_retries(name, func, selenium_retries)
                         progress.advance(task)
             if "custom" in criteria:
-                self.test_access_control_custom()
+                # Smoke: custom обычно быстрый и полезный
+                self._run_with_retries("Контроль доступа", self.test_access_control_custom, selenium_retries)
         except Exception as e:
             self.console.print(f"[red]Критическая ошибка: {e}[/red]")
         finally:
-            # 5. Нагрузочная статистика
-            run_load_stats(self.base_url)
-            # 6. Загрузочное тестирование с графиком
-            run_load_test_with_graph(self.base_url)
-            # 7. Тестирование сети (качество и скорость)
-            run_network_quality_test(self.base_url)
+            if suite in ("regression", "full"):
+                # 5. Нагрузочная статистика
+                run_load_stats(self.base_url)
+                # 6. Загрузочное тестирование с графиком
+                run_load_test_with_graph(self.base_url)
+                # 7. Тестирование сети (качество и скорость)
+                run_network_quality_test(self.base_url)
+            else:
+                console.print("[dim]Smoke: нагрузка/сеть пропущены[/dim]")
             if do_git and git_scheme == "per_run":
                 _report_git_info["runs"].append(git_autosave(root, f"Auto-save (after tests) {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"))
             self.finalize()
+
+    def _run_with_retries(self, name, func, retries: int):
+        """Фишка из зрелых E2E: ретраи на случай флейки (тайминги/рендер)."""
+        attempts = max(0, int(retries)) + 1
+        last_exc = None
+        for i in range(attempts):
+            try:
+                return func()
+            except Exception as e:
+                last_exc = e
+                if i + 1 < attempts:
+                    self.console.print(f"[yellow]⚠ {name}: ошибка, повтор {i+1}/{attempts-1}... ({e})[/yellow]")
+                    time.sleep(1)
+        if last_exc:
+            self.console.print(f"[red]✗ {name}: ошибка после ретраев: {last_exc}[/red]")
+        return False
 
     def generate_report(self):
         table = Table(title="📊 Отчёт тестирования", box=box.ROUNDED)
@@ -1104,6 +1197,8 @@ class PHPSiteTester:
                 network_graph_rel = os.path.relpath(_report_network_graph_path, root).replace("\\", "/")
             data = {
                 "timestamp": datetime.now().isoformat(),
+                "test_suite": _get_test_suite(),
+                "selenium_retries": _env_int("SELENIUM_RETRIES", 1, 0, 3),
                 "screenshot_dir": screenshot_rel,
                 "results": results_data,
                 "total": total,
@@ -1118,6 +1213,7 @@ class PHPSiteTester:
                 "code_complexity": _report_code_complexity,
                 "backup_info": _report_backup_info,
                 "git_info": _report_git_info,
+                "junit_xml": _report_junit_xml_path,
             }
             path = os.path.join(report_dir, "latest_result.json")
             with open(path, "w", encoding="utf-8") as f:
@@ -1140,6 +1236,15 @@ class PHPSiteTester:
         else:
             self.console.print("[dim]Selenium-результатов нет (возможно, сервер недоступен или драйвер не запустился).[/dim]")
         # Веб-отчёт пишем всегда (даже если Selenium не запускался)
+        # JUnit XML пишем до JSON, чтобы путь попал в веб-отчёт
+        global _report_junit_xml_path
+        try:
+            root = getattr(cfg, "PROJECT_ROOT", os.path.dirname(os.path.dirname(__file__)))
+            report_dir = os.path.join(os.path.dirname(__file__), "reports")
+            duration = (time.time() - self.start_time) if self.start_time else 0
+            _report_junit_xml_path = write_junit_report(root, f"TankBase::{_get_test_suite()}", self.results, duration, report_dir)
+        except Exception:
+            _report_junit_xml_path = None
         self.write_web_report()
         # HTML со скриншотами — только если есть директория
         if self.screenshot_dir and os.path.isdir(self.screenshot_dir):

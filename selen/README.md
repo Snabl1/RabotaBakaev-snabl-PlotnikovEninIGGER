@@ -29,6 +29,28 @@ python main.py
 python main.py http://localhost:3000
 ```
 
+## Наборы тестов (smoke/regression/full)
+
+Как в “взрослых” пайплайнах: быстрый прогон для проверки, что “живое”, и полный прогон перед сдачей.
+
+- `TEST_SUITE=smoke`: запускает быстрый UI‑набор и пропускает нагрузку/сеть и проверку БД
+- `TEST_SUITE=regression`: обычный прогон (UI + БД + нагрузка/сеть)
+- `TEST_SUITE=full`: всё (по сути как `regression`, но можно расширять)
+
+Пример (Windows cmd):
+
+```cmd
+set TEST_SUITE=smoke
+set SELENIUM_RETRIES=2
+python main.py http://localhost:3000
+```
+
+## Ретраи Selenium (устранение “флейки”)
+
+E2E‑тесты иногда падают из‑за таймингов/рендера. Можно включить ретраи:
+
+- `SELENIUM_RETRIES=0..3` (по умолчанию 1)
+
 ## Конфигурация
 
 Файл **`config_test.py`** (или переменные окружения):
@@ -70,3 +92,8 @@ python main.py http://твой-сайт
 - В консоли — таблица тестов и статистика.
 - Скриншоты — в `selen/screenshots/YYYYMMDD_HHMMSS/`.
 - HTML-отчёт со скриншотами — `screenshots/.../screenshots_summary.html`.
+- JUnit XML (для CI) — `selen/reports/junit_latest.xml` (и архив по времени `junit_YYYYMMDD_HHMMSS.xml`).
+
+## Ручное тестирование
+
+Шаблон чек‑листа: `selen/MANUAL_CHECKLIST.md`.
